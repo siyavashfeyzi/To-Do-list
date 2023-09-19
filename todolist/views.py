@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from . models import Task
 
 
@@ -11,7 +12,13 @@ def task_list(request):
 def add_task(request):
     if request.method == 'POST':
         title = request.POST.get('title', '')
-        Task.objects.create(title=title)
+        description = request.POST.get('description', '')
+        completed = request.POST.get('completed', False)
+        create_at = timezone.now()
+        last_update = timezone.now()
+        Task.objects.create(title=title, description=description,
+                            completed=completed, create_at=create_at, last_update=last_update)
+
         return redirect('task_list')
 
 
