@@ -9,13 +9,22 @@
     <h1>To-Do List</h1>
     <form  method='post' action="{% url 'add_task' %}">
         {% csrf_token %}
-        <input type="text" name="title" placeholder="Add new task" required>
+        <input type="text" name="title" placeholder="Title" required>
+        <br>
+        <textarea name="description" id="" cols="20" rows="10" placeholder="description"></textarea>
+        <br>
         <button type="submit">Add</button>
     </form>
 
     <ul>
         {% for task in tasks %}
-            <li>{{ task.title }} <a href="{% url 'delete_task' task.id %}">(Delete)</a></li>
+            <li><h2>{{ task.title }}</h2></li>
+            <ul>
+                <li><strong>{{task.description}}</strong></li>
+                <li><em>Create at: {{task.create_at}}</em></li>
+                <li><em>last update: {{task.last_update}}</em></li>
+                <li> <a href="{% url 'delete_task' task.id %}"><p style="color:#d42c2c">Delete</p></a></li>
+            </ul>
             {%empty%}
             <li>No Task Yet</li>
         {% endfor %}
