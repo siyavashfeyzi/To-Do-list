@@ -5,3 +5,5 @@ __pycache__
 .vscode
 misc.xml
 todolist/__pycache__/views.cpython-311.pyc
+todolist_project/__pycache__/settings.cpython-311.pyc
+todolist_project/__pycache__/urls.cpython-311.pyc
