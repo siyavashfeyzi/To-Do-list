@@ -20,13 +20,37 @@
 
     <ul>
         {% for task in tasks %}
-            <li><h2>{{ task.title }}</h2></li>
+
             <ul>
-                <li><strong>{{task.description}}</strong></li>
-                <li><em>Create at: {{task.create_at}}</em></li>
-                <li><em>last update: {{task.last_update}}</em></li>
-                <li> <a href="{% url 'delete_task' task.id %}"><p style="color:#d42c2c">Delete</p></a></li>
-            </ul>
+
+                <form action="{% url 'update_task' task.id%}" method="post">
+                    {% csrf_token %}        
+                    
+                    <input type="text" name="title" value={{task.title}} required>
+                    <br>
+                    <textarea name="description" id="" cols="20" rows="5">{{task.description}}</textarea>
+                    <br>
+
+                    <p>Is completed?</p>
+                    {% if task.completed %}
+                    <input type="radio" id="Yes" name="completed" value="True" checked>
+                    <label for="Yes">Yes</label><br>
+                    <input type="radio" id="No" name="completed" value="False" >
+                    <label for="No">No</label><br>
+                    {% else %}
+                    <input type="radio" id="Yes" name="completed" value="True" >
+                    <label for="Yes">Yes</label><br>
+                    <input type="radio" id="No" name="completed" value="False" checked>
+                    <label for="No">No</label><br>
+                    {% endif %}
+
+
+                    <li><em>Create at: {{task.create_at}}</em></li>
+                    <li><em>last update: {{task.last_update}}</em></li>
+                    <button type="submit">Submit</button>
+                    <li> <a href="{% url 'delete_task' task.id %}"><p style="color:#d42c2c">Delete</p></a></li>
+                </form>
+         </ul>
             {%empty%}
             <li>No Task Yet</li>
         {% endfor %}
