@@ -10,6 +10,7 @@ def task_list(request):
 
 def add_task(request):
     if request.method == 'POST':
+        """""
         title = request.POST.get('title', '')
         description = request.POST.get('description', '')
         completed = request.POST.get('completed', False)
@@ -17,7 +18,14 @@ def add_task(request):
         last_update = timezone.now()
         Task.objects.create(title=title, description=description,
                             completed=completed, create_at=create_at, last_update=last_update)
-
+        """""
+        task = Task()
+        task.title = request.POST.get('title', '')
+        task.description = request.POST.get('description', '')
+        task.completed = request.POST.get('completed', False)
+        task.create_at = timezone.now()
+        task.last_update = timezone.now()
+        task.save()
         return redirect('task_list')
 
 
