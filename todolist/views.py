@@ -33,3 +33,15 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.delete()
     return redirect('task_list')
+
+
+def update_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        # task = Task.objects.get(pk=task_id)
+        task.title = request.POST.get('title', '')
+        task.description = request.POST.get('description', '')
+        task.completed = request.POST.get('completed', '')
+        task.last_update = timezone.now()
+        task.save()
+        return redirect('task_list')
