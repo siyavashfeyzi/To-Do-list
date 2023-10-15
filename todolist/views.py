@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.db import transaction
 from . models import Task
 
 
@@ -8,6 +9,7 @@ def task_list(request):
     return render(request, 'todolist/task_list.html', {'tasks': tasks})
 
 
+@transaction.atomic()
 def add_task(request):
     if request.method == 'POST':
         """""
@@ -29,12 +31,14 @@ def add_task(request):
         return redirect('task_list')
 
 
+@transaction.atomic()
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.delete()
     return redirect('task_list')
 
 
+@transaction.atomic()
 def update_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
