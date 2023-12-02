@@ -5,7 +5,7 @@ from . models import Task
 
 
 def task_list(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.all().order_by('-priority')
     return render(request, 'todolist/task_list.html', {'tasks': tasks})
 
 
@@ -25,6 +25,7 @@ def add_task(request):
         task.title = request.POST.get('title', '')
         task.description = request.POST.get('description', '')
         task.completed = request.POST.get('completed', False)
+        task.priority = request.POST.get('priority', '')
         task.create_at = timezone.now()
         task.last_update = timezone.now()
         task.save()
@@ -46,6 +47,7 @@ def update_task(request, task_id):
         task.title = request.POST.get('title', '')
         task.description = request.POST.get('description', '')
         task.completed = request.POST.get('completed', '')
+        task.priority = request.POST.get('priority', '')
         task.last_update = timezone.now()
         task.save()
         return redirect('task_list')
