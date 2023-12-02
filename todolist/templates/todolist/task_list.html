@@ -15,7 +15,14 @@
         <br>
         <label for=""></label><textarea name="description" id="" cols="20" rows="10" placeholder="description"></textarea>
         <br>
-        <button type="submit">Add</button>
+        <label for="priority">Choose a priority:</label>
+        <select name="priority" id="priority">            
+          <option value="L" selected>Low</option>
+          <option value="M">Medium</option>
+          <option value="T">Top</option>          
+        </select>
+        <br>
+        <button type="submit" value="submit" >Add</button>
     </form>
 
     <ul>
@@ -31,6 +38,40 @@
                     <textarea name="description" id="" cols="20" rows="5">{{task.description}}</textarea>
                     <br>
 
+                    <!--
+                    <br>
+                    <label for="priority">Choose a priority:</label>
+                    <select name="priority" id="" value={{task.priority}}>            
+                      <option value="L">Low</option>
+                      <option value="M">Medium</option>
+                      <option value="T">Top</option>          
+                    </select>
+                    <br>
+                    -->
+
+                    <br>
+                    <label for="priority">Choose a priority:</label>
+                    {% if task.priority == 'L' %}
+                    <select name="priority" >            
+                      <option value="L" selected>Low</option>
+                      <option value="M">Medium</option>
+                      <option value="T">Top</option>          
+                    </select>
+                    {% elif task.priority == 'M' %}
+                    <select name="priority" >            
+                        <option value="L">Low</option>
+                        <option value="M" selected>Medium</option>
+                        <option value="T">Top</option>          
+                      </select>
+                    {% elif task.priority == 'T' %}
+                    <select name="priority" >            
+                        <option value="L">Low</option>
+                        <option value="M">Medium</option>
+                        <option value="T" selected>Top</option>          
+                      </select>
+                    {% endif %}
+                    <br>
+                    
                     <p>Is completed?</p>
                     {% if task.completed %}
                     <input type="radio" id="Yes" name="completed" value="True" checked>
