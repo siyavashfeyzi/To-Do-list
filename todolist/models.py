@@ -19,7 +19,8 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     create_at = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(auto_now=True)
-    priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES)
+    priority = models.CharField(
+        max_length=1, choices=PRIORITY_CHOICES, null=True)
 
     def __str__(self):
         return self.title
