@@ -38,17 +38,6 @@
                     <textarea name="description" id="" cols="20" rows="5">{{task.description}}</textarea>
                     <br>
 
-                    <!--
-                    <br>
-                    <label for="priority">Choose a priority:</label>
-                    <select name="priority" id="" value={{task.priority}}>            
-                      <option value="L">Low</option>
-                      <option value="M">Medium</option>
-                      <option value="T">Top</option>          
-                    </select>
-                    <br>
-                    -->
-
                     <br>
                     <label for="priority">Choose a priority:</label>
                     {% if task.priority == 'L' %}
