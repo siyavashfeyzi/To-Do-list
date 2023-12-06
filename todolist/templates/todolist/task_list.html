@@ -1,98 +1,104 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>To-Do List</title>
-    </head>
-    <body>
-        <h1>To-Do List</h1>
-        <form  method='post' action="{% url 'add_task' %}">
-            {% csrf_token %}
-            <label>
-                <input type="text" name="title" placeholder="Title" required>
-            </label>
-            <br>
-            <label for=""></label><textarea name="description" id="" cols="20" rows="10" placeholder="description"></textarea>
-            <br>
-            <label for="priority">Choose a priority:</label>
-            <select name="priority" id="priority">
-              <option value="L" selected>Low</option>
-              <option value="M">Medium</option>
-              <option value="T">Top</option>
-            </select>
-            <br>
-            <button type="submit" value="submit" >Add</button>
-        </form>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+</head>
+
+<body>
+    <h1>To-Do List</h1>
+    <form method='post' action="{% url 'add_task' %}">
+        {% csrf_token %}
+        <label for="text_C">Title:</label>
+        <input type="text" name="title" placeholder="Title" id="text_C" required>
+        <br>
+        <label for="textarea_C"></label>
+        <textarea name="description" id="textarea_C" cols="20" rows="10" placeholder="description">
+        </textarea>
+        <br>
+        <label for="priority_C">Choose a priority:</label>
+        <select name="priority" id="priority_C">
+            <option value="L" selected>Low</option>
+            <option value="M">Medium</option>
+            <option value="T">Top</option>
+        </select>
+        <br>
+        <button type="submit" value="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
         <ul>
-            {% for task in tasks %}
-                <!---->
-                <ul>
+            <form action="{% url 'update_task' task.id%}" method="post">
+                {% csrf_token %}
 
-                    <form action="{% url 'update_task' task.id%}" method="post">
-                        {% csrf_token %}
+                <label for="title_RUD"></label>
+                <input type="text" name="title" value={{task.title}} id="title_RUD" required>
+                <br>
+                <label for="description_RUD"></label>
+                <textarea name="description" id="description_RUD" cols="20" rows="5">{{task.description}}</textarea>
+                <br>
 
-                        <label>
-                            <input type="text" name="title" value={{task.title}} required>
-                        </label>
-                        <br>
-                        <textarea name="description" id="" cols="20" rows="5">{{task.description}}</textarea>
-                        <br>
+                <br>
+                <label for="priority_RUD">Choose a priority:</label>
+                {% if task.priority == 'L' %}
+                <label>
+                    <select name="priority">
+                        <option value="L" selected>Low</option>
+                        <option value="M">Medium</option>
+                        <option value="T">Top</option>
+                    </select>
+                </label>
+                {% elif task.priority == 'M' %}
+                <label>
+                    <select name="priority">
+                        <option value="L">Low</option>
+                        <option value="M" selected>Medium</option>
+                        <option value="T">Top</option>
+                    </select>
+                </label>
+                {% elif task.priority == 'T' %}
+                <label>
+                    <select name="priority">
+                        <option value="L">Low</option>
+                        <option value="M">Medium</option>
+                        <option value="T" selected>Top</option>
+                    </select>
+                </label>
+                {% endif %}
+                <br>
 
-                        <br>
-                        <label for="priority">Choose a priority:</label>
-                        {% if task.priority == 'L' %}
-                            <label>
-                                <select name="priority" >
-                                  <option value="L" selected>Low</option>
-                                  <option value="M">Medium</option>
-                                  <option value="T">Top</option>
-                                </select>
-                            </label>
-                        {% elif task.priority == 'M' %}
-                            <label>
-                                <select name="priority" >
-                                    <option value="L">Low</option>
-                                    <option value="M" selected>Medium</option>
-                                    <option value="T">Top</option>
-                                  </select>
-                            </label>
-                        {% elif task.priority == 'T' %}
-                            <label>
-                                <select name="priority" >
-                                    <option value="L">Low</option>
-                                    <option value="M">Medium</option>
-                                    <option value="T" selected>Top</option>
-                                  </select>
-                            </label>
-                        {% endif %}
-                        <br>
-
-                        <p>Is completed?</p>
-                        {% if task.completed %}
-                        <input type="radio" id="Yes" name="completed" value="True" checked>
-                        <label for="Yes">Yes</label><br>
-                        <input type="radio" id="No" name="completed" value="False" >
-                        <label for="No">No</label><br>
-                        {% else %}
-                        <input type="radio" id="Yes" name="completed" value="True" >
-                        <label for="Yes">Yes</label><br>
-                        <input type="radio" id="No" name="completed" value="False" checked>
-                        <label for="No">No</label><br>
-                        {% endif %}
+                <p>Is completed?</p>
+                {% if task.completed %}
+                <input type="radio" id="Yes" name="completed" value="True" checked>
+                <label for="Yes">Yes</label><br>
+                <input type="radio" id="No" name="completed" value="False">
+                <label for="No">No</label><br>
+                {% else %}
+                <input type="radio" id="Yes" name="completed" value="True">
+                <label for="Yes">Yes</label><br>
+                <input type="radio" id="No" name="completed" value="False" checked>
+                <label for="No">No</label><br>
+                {% endif %}
 
 
-                        <li><em>Create at: {{task.create_at}}</em></li>
-                        <li><em>last update: {{task.last_update}}</em></li>
-                        <button type="submit">Submit</button>
-                        <li> <a href="{% url 'delete_task' task.id %}"><p style="color:#d42c2c">Delete</p></a></li>
-                    </form>
-             </ul>
-                {%empty%}
-                <li>No Task Yet</li>
-            {% endfor %}
+                <li><em>Create at: {{task.create_at}}</em></li>
+                <li><em>last update: {{task.last_update}}</em></li>
+                <button type="submit">Submit</button>
+                <li>
+                    <a href="{% url 'delete_task' task.id %}">
+                        <p style="color:#d42c2c">Delete</p>
+                    </a>
+                </li>
+            </form>
         </ul>
-    </body>
+        {%empty%}
+        <li>No Task Yet</li>
+        {% endfor %}
+    </ul>
+</body>
+
 </html>
