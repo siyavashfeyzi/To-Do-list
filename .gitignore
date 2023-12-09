@@ -1,9 +1,8 @@
-*.pyc
-__pycache__
+
 /env
 *.env
 .vscode
 misc.xml
 media/*
-*/__pycache__/*
+
 
