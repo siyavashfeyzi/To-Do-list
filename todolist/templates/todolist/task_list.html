@@ -7,100 +7,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/task_list.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <title>To-Do List</title>
 </head>
 
 <body>
-    <h1>To-Do List</h1>
-    <form method='post' action="{% url 'add_task' %}">
-        {% csrf_token %}
-        <label for="text_C">Title:</label>
-        <input type="text" name="title" placeholder="Title" id="text_C" required>
-        <br>
-        <label for="textarea_C"></label>
-        <textarea name="description" id="textarea_C" cols="20" rows="10" placeholder="description">
-        </textarea>
-        <br>
-        <label for="priority_C">Choose a priority:</label>
-        <select name="priority" id="priority_C">
-            <option value="L" selected>Low</option>
-            <option value="M">Medium</option>
-            <option value="T">Top</option>
-        </select>
-        <br>
-        <button type="submit" value="submit">Add</button>
-    </form>
+    <h1 class="container">To-Do List</h1>
 
-    <ul>
-        {% for task in tasks %}
-        <ul>
-            <form action="{% url 'update_task' task.id%}" method="post">
-                {% csrf_token %}
+    <!--Create Task-->
+    <div class="create_task  mb-3 container form-group ">
+        <form method='post' action="{% url 'add_task' %}">
+            {% csrf_token %}
+            <input type="text" name="title" class="form-control" placeholder="Title" required>
+            <br>
 
-                <label for="title_RUD"></label>
-                <input type="text" name="title" value={{task.title}} id="title_RUD" required>
-                <br>
-                <label for="description_RUD"></label>
-                <textarea name="description" id="description_RUD" cols="20" rows="5">{{task.description}}</textarea>
-                <br>
+            <textarea name="description" class="form-control" placeholder="Description"></textarea>
+            <br>
 
-                <br>
-                <label for="priority_RUD">Choose a priority:</label>
-                {% if task.priority == 'L' %}
-                <label>
-                    <select name="priority">
-                        <option value="L" selected>Low</option>
-                        <option value="M">Medium</option>
-                        <option value="T">Top</option>
-                    </select>
-                </label>
-                {% elif task.priority == 'M' %}
-                <label>
-                    <select name="priority">
-                        <option value="L">Low</option>
-                        <option value="M" selected>Medium</option>
-                        <option value="T">Top</option>
-                    </select>
-                </label>
-                {% elif task.priority == 'T' %}
-                <label>
-                    <select name="priority">
-                        <option value="L">Low</option>
-                        <option value="M">Medium</option>
-                        <option value="T" selected>Top</option>
-                    </select>
-                </label>
-                {% endif %}
-                <br>
+            <select name="priority" class="form-select">
+                <option value="L" selected>Low</option>
+                <option value="M">Medium</option>
+                <option value="T">Top</option>
+            </select>
+            <br>
+            <button type="submit" value="submit" class="btn btn-primary form-control">Add</button>
+        </form>
+    </div>
+    <br>
 
-                <p>Is completed?</p>
+    <!--Show Tsks-->
+    {% for task in tasks %}
+    <div class="show_task form-group mb-3 container ">
+        <form action="{% url 'update_task' task.id%}" method="post">
+
+            {% csrf_token %}
+            <!--Title-->
+            <input type="text" name="title" value={{task.title}} class="form-control" required>
+            <br>
+            <!--description-->
+            <textarea name="description" class="form-control">{{task.description}}</textarea>
+            <br>
+
+            <!--priority-->
+            {% if task.priority == 'L' %}
+            <select name="priority" class="form-select">
+                <option value="L" selected>Low</option>
+                <option value="M">Medium</option>
+                <option value="T">Top</option>
+            </select>
+
+            {% elif task.priority == 'M' %}
+            <select name="priority" class="form-select">
+                <option value="L">Low</option>
+                <option value="M" selected>Medium</option>
+                <option value="T">Top</option>
+            </select>
+
+            {% elif task.priority == 'T' %}
+            <select name="priority" class="form-select">
+                <option value="L">Low</option>
+                <option value="M">Medium</option>
+                <option value="T" selected>Top</option>
+            </select>
+
+            {% endif %}
+            <br>
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <p>Is completed?</p>
+                </div>
+
                 {% if task.completed %}
-                <input type="radio" id="Yes" name="completed" value="True" checked>
-                <label for="Yes">Yes</label><br>
-                <input type="radio" id="No" name="completed" value="False">
-                <label for="No">No</label><br>
+                <!--Yes Selected-->
+                <div class="col-lg-2">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Yes" name="completed" value="True" checked>
+                        <label class="form-check-label" for="Yes">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="No" name="completed" value="False">
+                        <label class="form-check-label" for="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+
                 {% else %}
-                <input type="radio" id="Yes" name="completed" value="True">
-                <label for="Yes">Yes</label><br>
-                <input type="radio" id="No" name="completed" value="False" checked>
-                <label for="No">No</label><br>
+                <!--No Selected-->
+                <div class="col-lg-2">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Yes" name="completed" value="True">
+                        <label class="form-check-label" for="Yes">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="No" name="completed" value="False" checked>
+                        <label class="form-check-label" for="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
                 {% endif %}
+            </div>
+            <div class="row">
 
-
-                <li><em>Create at: {{task.create_at}}</em></li>
-                <li><em>last update: {{task.last_update}}</em></li>
-                <button type="submit">Submit</button>
-                <li>
+                <!--Update-->
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-success form-control">Update</button>
+                </div>
+                <!--Delete-->
+                <div class="col-sm">
                     <a href="{% url 'delete_task' task.id %}">
-                        <p style="color:#d42c2c">Delete</p>
+                        <button type="button" class="btn btn-danger form-control">Delete</button>
                     </a>
-                </li>
-            </form>
-        </ul>
-        {%empty%}
-        <li>No Task Yet</li>
-        {% endfor %}
-    </ul>
+                </div>
+                <div class="col-sm">
+                    <em>Create at: {{task.create_at}}</em>
+                </div>
+                <div class="col-sm">
+                    <em>last update: {{task.last_update}}</em>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    {%empty%}
+    <p id="NoTaskYet" class="container">No Task Yet</p>
+    {% endfor %}
+
+
 </body>
 
 </html>
